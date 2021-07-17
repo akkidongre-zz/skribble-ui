@@ -1,0 +1,17 @@
+<mat-card (mouseover)="onMouseOver()" (mouseleave)="onMouseLeave()">
+    <img *ngIf="note.images.length > 0" mat-card-image [src]="note.images[0]">
+
+    <mat-card-header>
+        <mat-card-title><h2 [class.grey]="emptyNote">{{emptyNote ? 'Empty Note' : note.title}}</h2></mat-card-title>
+    </mat-card-header>
+    
+    <mat-card-content>
+        <app-note-content [note]="note" (checkboxClick)="onCheckboxClick($event)"></app-note-content>
+    </mat-card-content>
+    <mat-card-actions [ngStyle]="{'visibility': actionsVisibility}">
+        <mat-icon color="primary" matTooltip="Edit this note" (click)="onEdit($event)">edit_outline</mat-icon>
+        <mat-icon class="dark-grey" (click)="onAddImageClick($event)" matTooltip="Add a picture">insert_photo_outline</mat-icon>
+        <mat-icon class="dark-grey" (click)="onDelete($event)" matTooltip="Delete this note">delete_outline</mat-icon>
+        <mat-icon color="accent" [class.dark-grey]="!note.isPinned" (click)="onPinNote($event)" matTooltip="Pin this note">push_pin_outline</mat-icon>
+    </mat-card-actions>
+</mat-card>

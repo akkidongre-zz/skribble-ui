@@ -1,0 +1,21 @@
+<ng-container *ngIf="uploadedImages.length > 0">
+    <app-image-gallery [images]="uploadedImages" [deleteImageVisible]="deleteImageVisible" (delete)="onDeleteImage($event)"></app-image-gallery>
+</ng-container>
+
+<h2 mat-dialog-title>
+    <ng-container *ngIf="!editMode">{{note.title}}</ng-container>
+    <input type="text" matInput [(ngModel)]="note.title" placeholder="Title" *ngIf="editMode">
+</h2>
+
+<mat-dialog-content>
+    <app-note-content [note]="note" *ngIf="!editMode"></app-note-content>
+    <app-edit-note *ngIf="editMode" [note]="note" [imagesList] = "uploadedImages"
+    (imageUpload)="onImageUpload($event)" (changeMode) = "onToggleEditMode()" (close)="onClose()"
+    ></app-edit-note>
+</mat-dialog-content>
+
+<mat-dialog-actions align="end" *ngIf="!editMode">
+    <button mat-flat-button (click)="onClose()">Close</button>
+    <button mat-flat-button color="primary" (click)="onEdit()" *ngIf="editMode">Save</button>
+    <button mat-flat-button color="primary" *ngIf="!editMode" (click)="onToggleEditMode()">Edit</button>
+</mat-dialog-actions>

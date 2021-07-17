@@ -1,0 +1,43 @@
+mat-card {
+    cursor: pointer;
+    overflow: hidden;
+    box-shadow: 0 1px 2px 0 rgb(60 64 67 / 30%), 0 2px 6px 2px rgb(60 64 67 / 15%);
+}
+
+mat-card-title {
+    width: 224px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+mat-card-content {
+    max-height: 320px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+mat-card-actions mat-icon {
+    font-size: 1.25rem;
+    margin-right: 16px;
+}
+
+:host::ng-deep.mat-card-header-text {
+    margin-left: 0;
+}
+
+a {
+    color: #084EFD;
+    text-decoration: none;
+}
+
+.img-div {
+    height: 120px;
+    width: 100%;
+    position: relative;
+}
+
+.card-image {
+    width: 100%;
+    height: auto;
+}

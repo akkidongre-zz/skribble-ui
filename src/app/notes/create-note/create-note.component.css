@@ -1,0 +1,65 @@
+:host::ng-deep.mat-form-field-underline {
+    width: 0%;
+    pointer-events: none;
+    transform: none;
+    height: 0px;
+    background-color: #fefefe;
+}
+
+:host::ng-deep.mat-form-field-appearance-standard .mat-form-field-flex {
+    padding-top: 0;
+}
+
+:host::ng-deep.mat-form-field.todo-field {
+    padding-top: 0px;
+}
+
+::placeholder { /* Chrome, Firefox, Opera, Safari 10.1+ */
+    opacity: 1; /* Firefox */
+    color: gray;
+}
+  
+:-ms-input-placeholder { /* Internet Explorer 10-11 */
+    color: gray;
+}
+  
+::-ms-input-placeholder { /* Microsoft Edge */
+    color: gray;
+}
+
+.title-field {
+    font-size: 1.25rem;
+}
+
+:host::ng-deep mat-checkbox {
+    width: 100%;
+}
+
+.button-row {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    width: 64px;
+}
+
+.image-row {
+    width:200px ;
+    height:auto;
+    display: inline-block;
+    position: relative;
+}
+
+.hidden-input {
+    visibility: hidden;
+    width: 0.1px;
+}
+
+.upload-images {
+    width: 100%;
+    height: auto;
+}
+
+.img-delete {
+    position: absolute;
+    right: 0;
+}

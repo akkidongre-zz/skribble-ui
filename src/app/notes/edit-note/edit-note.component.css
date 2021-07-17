@@ -1,0 +1,46 @@
+:host::ng-deep.mat-form-field-underline {
+    width: 0%;
+    pointer-events: none;
+    transform: none;
+    height: 0px;
+    background-color: #fefefe;
+}
+
+:host::ng-deep.mat-form-field.todo-field {
+    padding-top: 0px;
+}
+
+::placeholder { /* Chrome, Firefox, Opera, Safari 10.1+ */
+    opacity: 1; /* Firefox */
+    color: gray;
+}
+  
+:-ms-input-placeholder { /* Internet Explorer 10-11 */
+    color: gray;
+}
+  
+::-ms-input-placeholder { /* Microsoft Edge */
+    color: gray;
+}
+
+:host::ng-deep mat-checkbox {
+    width: 100%;
+}
+
+.title-field {
+    font-size: 1.25rem;
+}
+
+.button-row {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    width: 96px;
+}
+
+.hidden-input {
+    visibility: hidden;
+    width: 0.1px;
+}
+
+  

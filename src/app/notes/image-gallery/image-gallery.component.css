@@ -1,0 +1,25 @@
+.wrapper-div {
+    max-height: 300px;
+    overflow-y: scroll;
+    overflow-x: hidden;
+    position: relative;
+    width: 100%;
+}
+
+.masonry-item {
+    display: block;
+    width: 160px;
+    margin: 8px;
+    position: absolute;
+}
+
+img {
+    width: 100%;
+    height: auto;
+}
+
+
+.img-delete {
+    position: absolute;
+    right: 0;
+}

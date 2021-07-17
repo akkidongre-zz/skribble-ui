@@ -1,0 +1,19 @@
+<div class="container">
+    <div class="row form-row" *ngIf = !checkingAutoLogin>
+        <div class="col-lg-6 col-md-8 col-sm-12" 
+        [ngClass]="{
+            'text-center': deviceWidth < 992, 
+            'offset-lg-3 offset-md-2': deviceWidth < 992 && deviceWidth > 767,
+            'col-md-12': deviceWidth < 768
+        }">
+            <h1 class="bold heading">Welcome to Skribble!</h1>
+            <p class="grey subtitle">Your handy notebook is here</p>
+
+            <app-login-form (loginMode) = "toggleLoginMode($event)"></app-login-form>
+            <app-social-login *ngIf = "isLoginMode"></app-social-login>
+        </div>
+        <div class="col-lg-6 text-right" *ngIf="deviceWidth > 991">
+            <img class="hero-img" src="../../assets/landingImage.svg" alt="Image of a happy and successful man who maintains a todo list">
+        </div>
+    </div>
+</div>

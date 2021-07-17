@@ -1,0 +1,13 @@
+<div class="wrapper-div">
+    <ngx-masonry>
+        <div ngxMasonryItem *ngFor="let img of images; let i=index" class="masonry-item">
+            <div class="image-row" (mouseover)="onImageMouseover(i)" (mouseleave)="onMouseLeave(i)">
+                <img [id]="i" [src]="img" alt="">
+                <button mat-icon-button class="img-delete dark-grey" type="button" [ngStyle]="{'visibility': deleteImageVisible[i]}" (click)="onDeleteImage($event,i)">
+                    <mat-icon>delete</mat-icon>
+                </button>
+            </div>
+        </div>
+    </ngx-masonry>
+</div>
+

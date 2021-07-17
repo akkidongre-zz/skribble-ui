@@ -1,0 +1,20 @@
+<div *ngIf = "noteType === 'note' && noteContent && noteContent.length > 0">
+    <div [innerHtml]="noteContent"></div>
+    <!-- <ng-container *ngFor="let value of noteContentArr; let i = index">
+        <p *ngIf="value.text">
+            {{value.text}}
+        </p>
+        <a *ngIf="value.link" [href]="value.link" target="_blank" rel="noopener noreferrer">
+            {{value.link}}
+        </a>
+    </ng-container> -->
+</div>
+<div *ngIf="noteType === 'todo' && note.todo.length > 0">
+    <mat-list>
+        <mat-list-item *ngFor="let item of noteTodo; let i = index">
+            <mat-checkbox [(ngModel)]="item.value" (click)="onCheckboxClick($event)" (change)="onCheckboxChange($event.checked, i)">
+                <div [innerHtml]="item.todoTitle"></div>
+            </mat-checkbox>
+        </mat-list-item>
+    </mat-list>
+</div>

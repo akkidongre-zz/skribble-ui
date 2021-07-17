@@ -1,0 +1,29 @@
+mat-toolbar {
+    background-color: white;
+    height: 64px;
+}
+
+.brand-title {
+    color: #084EFD;
+    display: inline-block;
+    margin-bottom: 0 !important;
+}
+
+.brand-logo {
+    font-size: 1.25rem;
+}
+
+.search-div {
+    height: 100%;
+}
+
+.avatar {
+    width: 2rem;
+    height: 2rem;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+.spacer {
+    flex: 1 1 auto;
+}

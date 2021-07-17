@@ -1,0 +1,8 @@
+<div class="text-center mt-2">
+    <p class="grey">-- Or --</p>
+    <button mat-raised-button (click) = "loginWithGoogle()" [disabled] = "isSubmitting">
+        <mat-spinner diameter="20" *ngIf="isSubmitting"></mat-spinner>
+        <img src="../../assets/googleLogo.svg" alt="Google logo" class="login-button-img">
+        <span class="ms-2">Log in with Google</span>
+    </button>
+</div>
