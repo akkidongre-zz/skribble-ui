@@ -56,8 +56,6 @@ export class NoteDetailsComponent implements OnInit {
       this.includesMaps = true;
     }
 
-    console.log(this.note);
-
     this.notePinned = this.note.isPinned;
 
     this.initializeForm();
@@ -206,13 +204,50 @@ export class NoteDetailsComponent implements OnInit {
   }
 
   onCheckboxClick(index: number) {
-    console.log("Checkbox clicked from note detai;s");
-    this.note.todo[index].value = !this.note.todo[index].value;
-    this.notesService.markTodo(this.note);
+    const newVal = !this.note.todo[index].value
+    this.note.todo[index].value = newVal;
+    this.todo.at(index).patchValue({
+      value: newVal
+    });
     this.todoChanges = true;
   }
 
+  validateForm(formType: string): boolean {
+    const titleVal = this.note.title;
+    const contentVal = this.editNoteForm.get('content')?.value;
+
+    if (titleVal) return true;
+
+    if (contentVal) return true;
+
+    if (this.uploadedImages.length > 0) return true;
+
+    if (this.includesMaps) return true;
+
+    if (formType === 'todo') {
+      let checkFlag = false;
+      
+        for (let i = 0; i < this.todo.value.length; i++) {
+          if (this.todo.value[i].todoTitle){
+            checkFlag = true;
+          }
+        }
+
+        return checkFlag;
+    }
+
+    return false;
+  }
+
   onSubmit() {
+    let formType = this.note.type
+
+    const isValid = this.validateForm(formType);
+    if (!isValid) {
+      this.commonService.openSnackbar("Please enter a value to save the note", "Okay");
+      return;
+    }
+
     let todoList = this.todo.value;
     for (let i = todoList.length-1; i >= 0; i--) {
       if (!todoList[i].todoTitle) {
@@ -222,7 +257,6 @@ export class NoteDetailsComponent implements OnInit {
 
     const editedNote: Note = {
       ...this.note,
-      title: this.editNoteForm.get('title')?.value,
       content: this.editNoteForm.get('content')?.value,
       todo: todoList,
       includesImages: this.uploadedImages.length > 0 ? true : false,
@@ -234,11 +268,17 @@ export class NoteDetailsComponent implements OnInit {
     }
 
     this.notesService.updateAllNotes(editedNote);
-    this.dialogRef.close();
+    this.dialogRef.close({
+      data: {
+        data: editedNote,
+      }
+    });
   }
 
   onClose() {
-    this.dialogRef.close();
+    this.dialogRef.close({
+      data: this.note
+    });
   }
 
 }

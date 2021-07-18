@@ -149,6 +149,23 @@ export class NotesComponent implements OnInit, OnDestroy {
         editMode: editMode
       }
     });
+
+    this.removeNoteFromFilteredData(noteData.id);
+
+    dialogRef.afterClosed().subscribe((data) => {
+      this.notesService.updateAllNotes(data.data);
+    })
+  }
+
+  removeNoteFromFilteredData(id: number) {
+    const filteredIndex = this.myFilteredNotes.findIndex((nt) => nt.id === id);
+    this.myFilteredNotes.splice(filteredIndex, 1);
+
+    const pinnedIndex = this.myFilteredPinnedNotes.findIndex((nt) => nt.id === id);
+    if (pinnedIndex > -1) this.myFilteredPinnedNotes.splice(pinnedIndex, 1);
+
+    const otherIndex = this.myFilteredOtherNotes.findIndex((nt) => nt.id === id);
+    if (otherIndex > -1) this.myFilteredOtherNotes.splice(otherIndex, 1);
   }
 
   onClickNote(e: Event, id: number) {
@@ -206,7 +223,6 @@ export class NotesComponent implements OnInit, OnDestroy {
   }
 
   onCheckboxClick(todoIndex: number, id: number) {
-    console.log("Check box clicked");
     const i = this.myFilteredNotes.findIndex((nt) => nt.id === id);
     this.myFilteredNotes[i].todo[todoIndex].value = !this.myFilteredNotes[i].todo[todoIndex].value;
 
