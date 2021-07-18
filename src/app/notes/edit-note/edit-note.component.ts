@@ -25,6 +25,9 @@ export class EditNoteComponent implements OnInit {
   includesMaps = false;
   notePinned = false;
 
+  latitude: string;
+  longitude: string;
+
   @Input()
   note: Note;
 
@@ -42,6 +45,9 @@ export class EditNoteComponent implements OnInit {
 
   @Output()
   changeMode = new EventEmitter<boolean>(true);
+
+  @Output()
+  deleteMap = new EventEmitter<boolean>(false);
 
   constructor(
     private notesService: NotesService,
@@ -65,6 +71,9 @@ export class EditNoteComponent implements OnInit {
     this.includesMaps = this.note.includesMaps;
     this.includesUrl = this.note.includesUrl;
     this.notePinned = this.note.isPinned;
+
+    this.latitude = this.note.lat;
+    this.longitude = this.note.long;
   }
 
   setTodoData() {
@@ -81,11 +90,17 @@ export class EditNoteComponent implements OnInit {
     return this.editNoteForm.controls["todo"] as FormArray;
   }
 
-  onAddLinkClick() {
+  onAddLinkClick(e: Event) {
+    e.stopPropagation();
     this.showUrlInputField = true;
   }
 
   onAddLink(e: Event) {
+    const openSnackbar = () => {
+      this.commonService.openSnackbar("Please add a valid url");
+      this.addedLink = '';
+    }
+
     e.stopPropagation();
     if (!this.addedLink) {
       this.commonService.openSnackbar("Please add a valid url");
@@ -95,19 +110,44 @@ export class EditNoteComponent implements OnInit {
     const urlRegex = /(((https?:\/\/)|(www\.))[^\s]+)/g;
 
     if (!this.addedLink.match(urlRegex)) {
-      this.commonService.openSnackbar("Please add a valid url");
-      this.addedLink = '';
+      openSnackbar();
       return;
     }
 
-    const newValue = this.editNoteForm.get('content')?.value + `\n${this.addedLink}\n`;
-    this.editNoteForm.patchValue({
-      "content": newValue
-    });
+    if (!this.addedLink.includes("@")) {
+      openSnackbar();
+      return;
+    }
 
+    let splitParams = this.addedLink.split("@");
+
+    if (splitParams.length == 1) {
+      openSnackbar();
+      return;
+    }
+
+    const latLongValues = splitParams[1].split(",");
+    if (latLongValues.length < 2) {
+      openSnackbar();
+      return;
+    }
+
+    this.notesService.mapLinkSubject.next(latLongValues);
+
+    this.includesMaps = true;
+    this.latitude = latLongValues[0];
+    this.longitude = latLongValues[1];
+    // this.note.lat = latLongValues[0];
+    // this.note.long = latLongValues[1];
+    // this.includesMaps = true;
     this.showUrlInputField = false;
     this.addedLink = '';
-    this.includesUrl = true;
+  }
+
+  onRemoveLink() {
+    this.addedLink = '';
+    this.includesMaps = false;
+    this.deleteMap.emit(true);
   }
 
   addNewItemToList() {
@@ -189,7 +229,9 @@ export class EditNoteComponent implements OnInit {
       includesImages: this.includesImages,
       includesMaps: this.includesMaps,
       includesUrl: this.includesUrl,
-      isPinned: this.notePinned
+      isPinned: this.notePinned,
+      lat: this.latitude,
+      long: this.longitude
     }
     this.notesService.updateAllNotes(this.note);
     this.onClose();

@@ -46,10 +46,7 @@
     </ng-container>
 
     <div *ngIf="includesMaps">
-        <button mat-icon-button matTooltip="Remove google maps link" (click)="onRemoveLink($event)" class="map-delete-button">
-            <mat-icon color="warn">location_off_outline</mat-icon>
-        </button>
-        <app-maps [latitude]="latitude" [longitude]="longitude" [height]="'400px'"></app-maps>
+        <app-maps [latitude]="latitude" [longitude]="longitude" [height]="'400px'" [showDeleteButton]="true" (delete)="onRemoveLink()"></app-maps>
     </div>
     
     <div class="controls-div d-flex justify-content-between" *ngIf = "showTitleField">
@@ -61,7 +58,7 @@
             <button *ngIf="!includesMaps" mat-icon-button type="button" class="me-2" matTooltip="Insert google maps link" (click)="onAddLinkClick($event)">
                 <mat-icon color="primary" [class.dark-grey]="!showUrlInputField">location_on_outline</mat-icon>
             </button>
-            <button *ngIf="includesMaps" mat-icon-button type="button" class="me-2" matTooltip="Remove google maps link" (click)="onRemoveLink($event)">
+            <button *ngIf="includesMaps" mat-icon-button type="button" class="me-2" matTooltip="Remove google maps link" (click)="onRemoveLink();$event.stopPropagation()">
                 <mat-icon color="warn">location_off_outline</mat-icon>
             </button>
 

@@ -1,4 +1,4 @@
-import { Component, ElementRef, Input, OnInit, ViewChild } from '@angular/core';
+import { Component, ElementRef, Input, OnInit, Output, ViewChild, EventEmitter } from '@angular/core';
 import {latLng, Map, MapOptions, tileLayer, Marker, icon} from 'leaflet';
 
 declare var H: any;  
@@ -18,6 +18,12 @@ export class MapsComponent implements OnInit {
 
   @Input()
   height: string;
+
+  @Input()
+  showDeleteButton: boolean;
+
+  @Output()
+  delete = new EventEmitter<boolean>(false);
 
   map: Map;
   mapOptions: MapOptions;
@@ -58,6 +64,11 @@ export class MapsComponent implements OnInit {
           iconUrl: 'assets/marker-icon.png'
         }));
     marker.addTo(this.map);
+  }
+
+  onRemoveMap(e: Event) {
+    e.stopPropagation();
+    this.delete.emit(true);
   }
 
 }

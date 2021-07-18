@@ -4,7 +4,7 @@
     </mat-form-field> -->
 
     <mat-form-field appearance="standard" floatLabel="never" class="full-width" *ngIf = "!todoSelected">
-        <textarea matInput rows="20" placeholder="Skribble a note..." formControlName="content"></textarea>
+        <textarea matInput rows="10" placeholder="Skribble a note..." formControlName="content"></textarea>
     </mat-form-field>
 
     <ng-container *ngIf = "todoSelected">
@@ -30,18 +30,21 @@
         </div>
     </ng-container>
 
-    <!-- <mat-form-field appearance="standard" floatLabel="never" class="full-width url-input-div" *ngIf="showUrlInputField">
+    <mat-form-field appearance="standard" floatLabel="never" class="full-width url-input-div" *ngIf="showUrlInputField">
         <input matInput type="url" placeholder="Enter a url..." [(ngModel)]="addedLink" [ngModelOptions]="{standalone: true}">
         <button matSuffix mat-button color="primary" (click)="onAddLink($event)" type="button">
             Save url
         </button> 
-    </mat-form-field> -->
+    </mat-form-field>
 
     <div class="controls-div d-flex justify-content-between">
         <div class="icon-control">
-            <!-- <button mat-icon-button type="button" class="me-2" matTooltip="Insert a link" (click)="onAddLinkClick()">
-                <mat-icon color="primary" [class.dark-grey]="!showUrlInputField">link</mat-icon>
-            </button> -->
+            <button *ngIf="!includesMaps" mat-icon-button type="button" class="me-2" matTooltip="Insert google maps link" (click)="onAddLinkClick($event)">
+                <mat-icon color="primary" [class.dark-grey]="!showUrlInputField">location_on_outline</mat-icon>
+            </button>
+            <button *ngIf="includesMaps" mat-icon-button type="button" class="me-2" matTooltip="Remove google maps link" (click)="onRemoveLink();$event.stopPropagation()">
+                <mat-icon color="warn">location_off_outline</mat-icon>
+            </button>
 
             <input type="file" #img class="hidden-input" (change)="onImageUpload($event)" accept=".jpg,.jpeg,.png,.webp">
             <button mat-icon-button type="button" class="me-2" matTooltip="Attach an image" (click)="img.click()">
@@ -53,7 +56,7 @@
             </button>
         </div>
         <div class="save-control">
-            <button mat-flat-button matTooltip="Cancel note" type="button" (click)="onCancel($event)">Cancel</button>
+            <!-- <button mat-flat-button matTooltip="Cancel note" type="button" (click)="onCancel($event)">Cancel</button> -->
             <button mat-raised-button color="primary" matTooltip="Save note" type="submit">Submit</button>
         </div>
     </div>

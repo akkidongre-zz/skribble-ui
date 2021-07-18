@@ -1,4 +1,7 @@
 <div class="map-wrapper" [style.height]="height">
+    <button *ngIf="showDeleteButton" mat-icon-button matTooltip="Remove google maps link" (click)="onRemoveMap($event)" class="map-delete-button">
+        <mat-icon color="warn">location_off_outline</mat-icon>
+    </button>
     <div id="map"
         leaflet
         (leafletMapReady)="onMapReady($event)"

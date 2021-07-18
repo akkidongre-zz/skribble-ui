@@ -8,3 +8,9 @@
     height: 100%;
     position: relative;
 }
+
+.map-delete-button {
+    position: absolute;
+    right: 10px;
+    z-index: 1000;
+}

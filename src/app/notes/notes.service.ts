@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, Subscription } from 'rxjs';
+import { BehaviorSubject, Subject, Subscription } from 'rxjs';
 import { AuthService } from '../auth/auth.service';
 import { Note } from './models/note.model';
 
@@ -12,6 +12,8 @@ export class NotesService {
   private myNotes: Note[] = [];
 
   notesUpdated = new BehaviorSubject<boolean>(false);
+
+  mapLinkSubject = new Subject<string[]>();
 
   constructor(
     private authService: AuthService

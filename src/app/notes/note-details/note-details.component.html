@@ -10,9 +10,9 @@
 <mat-dialog-content>
     <app-note-content [note]="note" *ngIf="!editMode" (checkboxClick)="onCheckboxClick($event)"></app-note-content>
     <app-edit-note *ngIf="editMode" [note]="note" [noteTitle]="note.title" [imagesList] = "uploadedImages"
-    (imageUpload)="onImageUpload($event)" (changeMode) = "onToggleEditMode()" (close)="onClose()"
+    (imageUpload)="onImageUpload($event)" (changeMode) = "onToggleEditMode()" (close)="onClose()" (deleteMap)="onDeleteMap()"
     ></app-edit-note>
-    <app-maps *ngIf="note.includesMaps" [latitude]="latitude" [longitude]="longitude" [height]="'200px'"></app-maps>
+    <app-maps *ngIf="includeMaps" [latitude]="latitude" [longitude]="longitude" [height]="'200px'" [showDeleteButton]="true" (delete)="onDeleteMap()"></app-maps>
 </mat-dialog-content>
 
 <mat-dialog-actions align="end" *ngIf="!editMode">

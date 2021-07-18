@@ -127,8 +127,7 @@ export class CreateNoteComponent implements OnInit {
     this.addedLink = '';
   }
 
-  onRemoveLink(e: Event) {
-    e.stopPropagation();
+  onRemoveLink() {
     this.addedLink = '';
     this.includesMaps = false;
     this.latitude = '';

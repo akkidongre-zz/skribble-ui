@@ -1,5 +1,6 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { Subscription } from 'rxjs';
 import { CommonService } from 'src/app/shared/common.service';
 import { Note } from '../models/note.model';
 import { NotesService } from '../notes.service';
@@ -23,6 +24,10 @@ export class NoteDetailsComponent implements OnInit {
   latitude: string;
   longitude: string;
 
+  includeMaps = false;
+
+  private mapLinkSub: Subscription;
+
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: {data: Note, editMode: boolean},
     private dialogRef: MatDialogRef<any>,
@@ -42,7 +47,15 @@ export class NoteDetailsComponent implements OnInit {
     if (this.note.includesMaps) {
       this.latitude = this.note.lat;
       this.longitude = this.note.long;
+      this.includeMaps = true;
     }
+
+    this.mapLinkSub = this.notesService.mapLinkSubject.subscribe((link) => {
+      this.latitude = link[0];
+      this.longitude = link[1];
+      this.includeMaps = true;
+      // this.onAddLink();
+    });
   }
 
   onCheckboxClick(index: number) {
@@ -94,6 +107,29 @@ export class NoteDetailsComponent implements OnInit {
   onDeleteImage(index: number) {
     this.anyChanges = true;
     this.uploadedImages.splice(index,1);
+  }
+
+  onAddLink() {
+    // this.note.includesMaps = true;
+    // this.note.lat = this.latitude;
+    // this.note.long = this.longitude;
+    
+  }
+
+  onDeleteMap() {
+    this.note.includesMaps = false;
+    this.note.lat = '';
+    this.note.long = '';
+    this.latitude = '';
+    this.longitude = '';
+    this.includeMaps = false;
+    this.notesService.updateAllNotes(this.note);
+  }
+
+  ngOnDestroy() {
+    if (this.mapLinkSub) {
+      this.mapLinkSub.unsubscribe();
+    }
   }
 
 }
