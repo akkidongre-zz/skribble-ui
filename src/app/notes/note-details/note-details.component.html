@@ -8,7 +8,7 @@
 </h2>
 
 <mat-dialog-content>
-    <app-note-content [note]="note" *ngIf="!editMode"></app-note-content>
+    <app-note-content [note]="note" *ngIf="!editMode" (checkboxClick)="onCheckboxClick($event)"></app-note-content>
     <app-edit-note *ngIf="editMode" [note]="note" [noteTitle]="note.title" [imagesList] = "uploadedImages"
     (imageUpload)="onImageUpload($event)" (changeMode) = "onToggleEditMode()" (close)="onClose()"
     ></app-edit-note>
@@ -17,6 +17,5 @@
 
 <mat-dialog-actions align="end" *ngIf="!editMode">
     <button mat-flat-button (click)="onClose()">Close</button>
-    <button mat-flat-button color="primary" (click)="onEdit()" *ngIf="editMode">Save</button>
-    <button mat-flat-button color="primary" *ngIf="!editMode" (click)="onToggleEditMode()">Edit</button>
+    <button mat-flat-button *ngIf="!editMode" (click)="onToggleEditMode()">Edit Note</button>
 </mat-dialog-actions>

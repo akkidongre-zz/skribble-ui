@@ -79,10 +79,6 @@ export class NotesComponent implements OnInit, OnDestroy {
     this.myFilteredPinnedNotes = [];
     this.myFilteredOtherNotes = [];
     
-    if (!this.searchKey.trim()) {
-
-    }
-
     for (let i = 0; i < this.myNotes.length; i++) {
       const lowerKey = this.searchKey.trim().toLowerCase();
 
@@ -105,8 +101,10 @@ export class NotesComponent implements OnInit, OnDestroy {
         this.deepCopyNotes(this.myNotes[i]);
       }
     }
-    // this.masonry.reloadItems();
-    // this.masonry.layout();
+    // if (this.masonry) {
+    //   this.masonry.reloadItems();
+    //   this.masonry.layout();
+    // } 
   }
 
   deepCopyNotes(note: Note) {
@@ -118,33 +116,6 @@ export class NotesComponent implements OnInit, OnDestroy {
     }
 
     this.myFilteredOtherNotes.push(note);
-    // let todoList = [];
-    // if (note.type === "todo") {
-    //   for (let item of note.todo) {
-    //     todoList.push({
-    //       "todoTitle": item.todoTitle,
-    //       "value": item.value
-    //     });
-    //   }
-    // }
-
-    // this.myFilteredNotes.push({
-    //   ...note,
-    //   todo: todoList
-    // });
-
-    // if (note.isPinned) {
-    //   this.myFilteredPinnedNotes.push({
-    //     ...note,
-    //     todo: todoList
-    //   });
-    //   return;
-    // }
-
-    // this.myFilteredOtherNotes.push({
-    //   ...note,
-    //   todo: todoList
-    // });
   }
 
   onDeleteNote(id: number) {
@@ -152,7 +123,7 @@ export class NotesComponent implements OnInit, OnDestroy {
   }
 
   onEditNote(id: number) {
-    const noteData = this.myNotes.find((nt) => nt.id === id);
+    const noteData = this.myFilteredNotes.find((nt) => nt.id === id);
 
     if (!noteData) {
       return;
@@ -181,7 +152,7 @@ export class NotesComponent implements OnInit, OnDestroy {
   }
 
   onClickNote(e: Event, id: number) {
-    const noteData = this.myNotes.find((nt) => nt.id === id);
+    const noteData = this.myFilteredNotes.find((nt) => nt.id === id);
     
     if (!noteData) {
       return;
@@ -211,14 +182,14 @@ export class NotesComponent implements OnInit, OnDestroy {
       return;
     }
 
-    const index = this.myNotes.findIndex((nt) => nt.id === id);
+    const index = this.myFilteredNotes.findIndex((nt) => nt.id === id);
 
     if (file) {
       const reader = new FileReader();
       reader.onload = () => {
         let readImage = reader.result as string;
-        this.myNotes[index].images.push(readImage);
-        this.notesService.updateAllNotes(this.myNotes[index]);
+        this.myFilteredNotes[index].images.push(readImage);
+        this.notesService.updateAllNotes(this.myFilteredNotes[index]);
         this.commonService.openSnackbar("Image uploaded", "Okay");
       }
       reader.readAsDataURL(file);
@@ -226,7 +197,7 @@ export class NotesComponent implements OnInit, OnDestroy {
   }
 
   onNotePin(id: number) {
-    const foundNote = this.myNotes.find((nt) => nt.id === id);
+    const foundNote = this.myFilteredNotes.find((nt) => nt.id === id);
     if (foundNote?.isPinned) {
       this.notesService.unPinNote(id);
     } else {
@@ -235,10 +206,10 @@ export class NotesComponent implements OnInit, OnDestroy {
   }
 
   onCheckboxClick(todoIndex: number, id: number) {
-    const i = this.myNotes.findIndex((nt) => nt.id === id);
-    this.myNotes[i].todo[todoIndex].value = !this.myNotes[i].todo[todoIndex].value;
+    const i = this.myFilteredNotes.findIndex((nt) => nt.id === id);
+    this.myFilteredNotes[i].todo[todoIndex].value = !this.myFilteredNotes[i].todo[todoIndex].value;
 
-    this.notesService.markTodo(this.myNotes[i]);
+    this.notesService.markTodo(this.myFilteredNotes[i]);
   }
 
   ngOnDestroy() {

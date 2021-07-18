@@ -2,6 +2,7 @@ import { Component, Inject, OnInit } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { CommonService } from 'src/app/shared/common.service';
 import { Note } from '../models/note.model';
+import { NotesService } from '../notes.service';
 
 @Component({
   selector: 'app-note-details',
@@ -25,7 +26,8 @@ export class NoteDetailsComponent implements OnInit {
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: {data: Note, editMode: boolean},
     private dialogRef: MatDialogRef<any>,
-    private commonService: CommonService
+    private commonService: CommonService,
+    private notesService: NotesService
   ) { }
 
   ngOnInit(): void {
@@ -41,6 +43,11 @@ export class NoteDetailsComponent implements OnInit {
       this.latitude = this.note.lat;
       this.longitude = this.note.long;
     }
+  }
+
+  onCheckboxClick(index: number) {
+    this.note.todo[index].value = !this.note.todo[index].value;
+    this.notesService.markTodo(this.note);
   }
 
   onToggleEditMode() {
