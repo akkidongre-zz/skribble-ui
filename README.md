@@ -24,7 +24,7 @@ Auth and notes services are used for authentication and actions on notes respect
 
 1. Create component could have been split up and reused as edit form as well.
 2. Masonry layout could have been made more efficient.
-3. Now, search text is used to filter the notes by type as well. There could have been separate filters.
+3. Now, search text is used to filter the notes by type as well and what I have done is a very crude implementation. There could have been separate filters or type field of notes should be thoroughly planned.
 4. Repitition of code is present which can be reduced.
 5. NgRx is not implemented. It can be implemented.
 
