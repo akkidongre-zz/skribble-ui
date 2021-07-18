@@ -17,7 +17,7 @@ export class AuthService {
   private lastId: number = 0;
 
   authTimer: ReturnType<typeof setTimeout>;
-  defaultExpirySeconds = 3600;
+  defaultExpirySeconds = 7200;
 
   constructor(
     private router: Router,

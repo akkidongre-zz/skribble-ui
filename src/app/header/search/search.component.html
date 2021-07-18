@@ -1,6 +1,18 @@
-<mat-form-field appearance="outline" floatLabel = "never" class="full-width search-form">
+<!-- <mat-form-field appearance="outline" floatLabel = "never" class="full-width search-form">
+    <mat-icon matPrefix class="grey">search</mat-icon>
     <input matInput type="text" 
         placeholder="Search for notes by type, title and content..." 
-        (keyup) = "searchForNotes($event)"
+        [(ngModel)]="searchKey"
+        (keyup) = "searchForNotes()"
     >
-</mat-form-field>
+    <button type="button" mat-icon-button (click) = "clearSearchKey()">
+        <mat-icon>close</mat-icon>
+    </button>
+</mat-form-field> -->
+<div class="input-group">
+    <input type="text" class="search-bar" [(ngModel)]="searchKey" 
+    (keyup) = "searchForNotes()" placeholder="Search for notes by type, title and content..." >
+    <button type="button" mat-icon-button class="clear-btn" (click) = "clearSearchKey()">
+        <mat-icon>close</mat-icon>
+    </button>
+</div>

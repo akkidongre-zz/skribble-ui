@@ -29,6 +29,9 @@ export class EditNoteComponent implements OnInit {
   note: Note;
 
   @Input()
+  noteTitle: string;
+
+  @Input()
   imagesList: string[];
 
   @Output()
@@ -139,7 +142,7 @@ export class EditNoteComponent implements OnInit {
 
     this.note = {
       ...this.note,
-      title: this.editNoteForm.get('title')?.value,
+      title: this.noteTitle,
       content: this.editNoteForm.get('content')?.value,
       todo: this.todo.value,
       includesImages: this.includesImages,

@@ -70,6 +70,7 @@ export class NoteComponent implements OnInit {
   }
 
   onCheckboxClick(index: number) {
+    // this.note.todo[index].value = true;
     this.checkboxClick.emit(index);
   }
 

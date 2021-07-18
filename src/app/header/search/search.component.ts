@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { CommonService } from 'src/app/shared/common.service';
 
 @Component({
   selector: 'app-search',
@@ -7,13 +8,22 @@ import { Component, OnInit } from '@angular/core';
 })
 export class SearchComponent implements OnInit {
 
-  constructor() { }
+  searchKey = '';
+
+  constructor(
+    private commonService: CommonService
+  ) { }
 
   ngOnInit(): void {
   }
 
-  searchForNotes(event: Event) {
-    console.log(event);
+  searchForNotes() {
+    this.commonService.searchQuery.next(this.searchKey);
+  }
+
+  clearSearchKey() {
+    this.searchKey = '';
+    this.searchForNotes();
   }
 
 }

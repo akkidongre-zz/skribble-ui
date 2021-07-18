@@ -9,7 +9,7 @@
 
 <mat-dialog-content>
     <app-note-content [note]="note" *ngIf="!editMode"></app-note-content>
-    <app-edit-note *ngIf="editMode" [note]="note" [imagesList] = "uploadedImages"
+    <app-edit-note *ngIf="editMode" [note]="note" [noteTitle]="note.title" [imagesList] = "uploadedImages"
     (imageUpload)="onImageUpload($event)" (changeMode) = "onToggleEditMode()" (close)="onClose()"
     ></app-edit-note>
 </mat-dialog-content>

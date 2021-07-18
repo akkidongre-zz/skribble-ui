@@ -4,11 +4,11 @@ import { Subscription } from 'rxjs';
 import { Note } from './models/note.model';
 import { NotesService } from './notes.service';
 
-import { EditNoteComponent } from './edit-note/edit-note.component';
-import { NoteComponent } from './note/note.component';
 import { NoteDetailsComponent } from './note-details/note-details.component';
-import { AuthService } from '../auth/auth.service';
 import { NgxMasonryComponent } from 'ngx-masonry';
+import { CommonService } from '../shared/common.service';
+
+import { debounceTime } from 'rxjs/operators';
 
 @Component({
   selector: 'app-notes',
@@ -17,10 +17,19 @@ import { NgxMasonryComponent } from 'ngx-masonry';
 })
 export class NotesComponent implements OnInit, OnDestroy {
   private notesUpdatedSub: Subscription;
+  private searchSub: Subscription;
 
+  searchKey = '';
+
+  // Store of notes
   myNotes: Note[] = [];
   myOtherNotes: Note[] = [];
   pinnedNotes: Note[] = [];
+
+  // Display note lists. Vary based on filter
+  myFilteredNotes: Note[] = [];
+  myFilteredOtherNotes: Note[] = [];
+  myFilteredPinnedNotes: Note[] = [];
 
   deviceWidth = window.screen.width;
 
@@ -33,6 +42,7 @@ export class NotesComponent implements OnInit, OnDestroy {
 
   constructor(
     private notesService: NotesService,
+    private commonService: CommonService,
     private matDialog: MatDialog
   ) { }
 
@@ -40,6 +50,12 @@ export class NotesComponent implements OnInit, OnDestroy {
     this.notesUpdatedSub = this.notesService.notesUpdated.subscribe((_) => {
       this.myNotes = this.notesService.getMyNotes();
       this.differentiateNotes();
+      this.setFilteredNotes();
+    });
+
+    this.searchSub = this.commonService.searchQuery.pipe(debounceTime(300)).subscribe((key) => {
+      this.searchKey = key;
+      this.setFilteredNotes();
     });
   }
 
@@ -53,8 +69,80 @@ export class NotesComponent implements OnInit, OnDestroy {
         this.myOtherNotes.push(this.myNotes[i]);
       }
     }
+    
+  }
+
+  setFilteredNotes() {
+    this.myFilteredNotes = [];
+    this.myFilteredPinnedNotes = [];
+    this.myFilteredOtherNotes = [];
+    
+    if (!this.searchKey.trim()) {
+
+    }
+
+    for (let i = 0; i < this.myNotes.length; i++) {
+      const lowerKey = this.searchKey.trim().toLowerCase();
+
+      let include = false;
+
+      if (this.myNotes[i].title?.toLowerCase().includes(lowerKey) ||
+        this.myNotes[i].content?.toLowerCase().includes(lowerKey) ||
+        this.myNotes[i].type.toLowerCase().includes(lowerKey)
+      ) {
+        include = true;
+      } else if (this.myNotes[i].type === "todo") {
+        for (let item of this.myNotes[i].todo) {
+          if (item?.todoTitle?.toLowerCase().includes(lowerKey)) {
+            include = true;
+          }
+        }
+      }
+
+      if (include) {
+        this.deepCopyNotes(this.myNotes[i]);
+      }
+    }
     // this.masonry.reloadItems();
     // this.masonry.layout();
+  }
+
+  deepCopyNotes(note: Note) {
+    this.myFilteredNotes.push(note);
+
+    if (note.isPinned) {
+      this.myFilteredPinnedNotes.push(note);
+      return;
+    }
+
+    this.myFilteredOtherNotes.push(note);
+    // let todoList = [];
+    // if (note.type === "todo") {
+    //   for (let item of note.todo) {
+    //     todoList.push({
+    //       "todoTitle": item.todoTitle,
+    //       "value": item.value
+    //     });
+    //   }
+    // }
+
+    // this.myFilteredNotes.push({
+    //   ...note,
+    //   todo: todoList
+    // });
+
+    // if (note.isPinned) {
+    //   this.myFilteredPinnedNotes.push({
+    //     ...note,
+    //     todo: todoList
+    //   });
+    //   return;
+    // }
+
+    // this.myFilteredOtherNotes.push({
+    //   ...note,
+    //   todo: todoList
+    // });
   }
 
   onDeleteNote(id: number) {
@@ -62,7 +150,7 @@ export class NotesComponent implements OnInit, OnDestroy {
   }
 
   onEditNote(id: number) {
-    // const index = this.myNotes.findIndex((nt) => nt.id === id);
+    const index = this.myNotes.findIndex((nt) => nt.id === id);
     this.onClickNote(id, true);
   }
 
@@ -103,7 +191,7 @@ export class NotesComponent implements OnInit, OnDestroy {
 
   onCheckboxClick(todoIndex: number, id: number) {
     const i = this.myNotes.findIndex((nt) => nt.id === id);
-    // this.myNotes[i].todo[todoIndex].value = !this.myNotes[i].todo[todoIndex].value;
+    this.myNotes[i].todo[todoIndex].value = !this.myNotes[i].todo[todoIndex].value;
 
     this.notesService.markTodo(this.myNotes[i]);
   }
@@ -111,6 +199,10 @@ export class NotesComponent implements OnInit, OnDestroy {
   ngOnDestroy() {
     if (this.notesUpdatedSub) {
       this.notesUpdatedSub.unsubscribe();
+    }
+
+    if (this.searchSub) {
+      this.searchSub.unsubscribe();
     }
   }
 

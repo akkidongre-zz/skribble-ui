@@ -1,6 +1,7 @@
 mat-toolbar {
     background-color: white;
     height: 64px;
+    justify-content: space-between;
 }
 
 .brand-title {
@@ -14,16 +15,10 @@ mat-toolbar {
 }
 
 .search-div {
-    height: 100%;
-}
-
-.avatar {
-    width: 2rem;
-    height: 2rem;
-    border-radius: 50%;
-    object-fit: cover;
-}
-
-.spacer {
-    flex: 1 1 auto;
+    width: 25rem;
+    position: relative;
+    font-size: 14px;
+    height: 46px;
+    margin: auto;
+    
 }

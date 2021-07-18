@@ -1,22 +1,23 @@
 <mat-toolbar>
-    <svg xmlns="http://www.w3.org/2000/svg" 
-        xmlns:xlink="http://www.w3.org/1999/xlink" 
-        aria-hidden="true" 
-        focusable="false" 
-        width="1em" height="1em" 
-        style="-ms-transform: rotate(360deg); -webkit-transform: rotate(360deg); transform: rotate(360deg);" 
-        preserveAspectRatio="xMidYMid meet" viewBox="0 0 16 16"
-    >
-        <path d="M0 16C2 10 7.234 0 16 0c-4.109 3.297-6 11-9 11H4l-3 5H0z" fill="#FF9100"/>
-        <rect x="0" y="0" width="16" height="16" fill="rgba(0, 0, 0, 0)" />
-    </svg>
-    <h2 class="brand-title bold">Skribble</h2>
-
-    <!-- <div class="search-div full-width">
-        <app-search *ngIf = "isLoggedIn"></app-search>
-    </div> -->
+    <div>
+        <svg xmlns="http://www.w3.org/2000/svg" 
+            xmlns:xlink="http://www.w3.org/1999/xlink" 
+            aria-hidden="true" 
+            focusable="false" 
+            width="1em" height="1em" 
+            style="-ms-transform: rotate(360deg); -webkit-transform: rotate(360deg); transform: rotate(360deg);" 
+            preserveAspectRatio="xMidYMid meet" viewBox="0 0 16 16"
+        >
+            <path d="M0 16C2 10 7.234 0 16 0c-4.109 3.297-6 11-9 11H4l-3 5H0z" fill="#FF9100"/>
+            <rect x="0" y="0" width="16" height="16" fill="rgba(0, 0, 0, 0)" />
+        </svg>
+        <h2 class="brand-title bold">Skribble</h2>
+    </div>
     
-    <span class="spacer"></span>
+    <div class="search-div">
+        <app-search *ngIf="isLoggedIn"></app-search>
+    </div>
+    <!-- <span class="spacer"></span> -->
     <button *ngIf="isLoggedIn" mat-button (click)="onLogout()" type="button" color="accent">Log Out</button>
     
 </mat-toolbar>

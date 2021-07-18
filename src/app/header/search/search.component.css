@@ -1,3 +1,39 @@
-mat-form-field {
-    height: 60%;
+.input-group {
+    position: relative;
+}
+
+.search-bar {
+    font: inherit;
+    font-size: 14px;
+    height: 46px;
+    outline: none;
+    width: 100%;
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+    /* padding: 11px 0; */
+    border: 0.2px solid rgba(0, 0, 0, 0.12);
+    border-radius: 5px;
+    padding: 1em 0.75em;
+    font-weight: 400;
+}
+
+::placeholder { /* Chrome, Firefox, Opera, Safari 10.1+ */
+    opacity: 1; /* Firefox */
+    color: gray !important;
+    font-weight: 400;
+}
+  
+:-ms-input-placeholder { /* Internet Explorer 10-11 */
+    color: gray !important;
+    font-weight: 400;
+}
+  
+::-ms-input-placeholder { /* Microsoft Edge */
+    color: gray !important;
+    font-weight: 400;
+}
+
+.clear-btn {
+    position: absolute;
+    right: 0;
 }
