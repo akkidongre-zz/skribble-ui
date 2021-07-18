@@ -18,4 +18,8 @@ export class CommonService {
       duration: 2000
     });
   }
+
+  validateImage(file: File) {
+    
+  }
 }

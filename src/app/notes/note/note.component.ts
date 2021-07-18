@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, ElementRef, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
 import { Note } from '../models/note.model';
 
 @Component({
@@ -15,7 +15,7 @@ export class NoteComponent implements OnInit {
   delete = new EventEmitter<number>();
 
   @Output()
-  addImage = new EventEmitter<boolean>(false);
+  addImage = new EventEmitter<Event>();
 
   @Output()
   checkboxClick = new EventEmitter<number>();
@@ -32,6 +32,9 @@ export class NoteComponent implements OnInit {
   actionsVisibility = 'hidden';
 
   emptyNote = false;
+
+  @ViewChild('img')
+  imageInput: ElementRef;
 
   constructor() { }
 
@@ -59,9 +62,19 @@ export class NoteComponent implements OnInit {
     this.delete.emit(this.note.id);
   }
 
+  onAddImage(e: Event) {
+    console.log(e);
+    this.addImage.emit(e);
+  }
+
+  onImageInputClick(e: Event) {
+    e.stopPropagation();
+  }
+
   onAddImageClick(e: Event) {
     e.stopPropagation();
-    this.addImage.emit(true);
+    this.imageInput.nativeElement.click();
+    // this.addImage.emit(true);
   }
 
   onPinNote(e: Event) {

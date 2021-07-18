@@ -33,6 +33,8 @@ export class NotesComponent implements OnInit, OnDestroy {
 
   deviceWidth = window.screen.width;
 
+  private allowedImageFormats = ['png', 'jpg', 'jpeg', 'webp'];
+
   @HostListener("window:resize", ["$event"])
   onResize(event: Event) {
     this.deviceWidth = (event.currentTarget as Window).innerWidth;
@@ -176,8 +178,35 @@ export class NotesComponent implements OnInit, OnDestroy {
     })
   }
 
-  onAddImage(id: number) {
+  onAddImage(event: Event, id: number) {
+    const files = (event.target as HTMLInputElement).files;
+    let file;
+    if (files && files.length > 0) {
+      file = files[0];
+    }
 
+    if (file && this.allowedImageFormats.indexOf(file?.type.split("/")[1]) === -1) {
+      this.commonService.openSnackbar("Please upload png, jpg, jpeg or webp images");
+      return;
+    }
+
+    if (file && file.size > 150000) {
+      this.commonService.openSnackbar("Image size should be less than 150kb");
+      return;
+    }
+
+    const index = this.myNotes.findIndex((nt) => nt.id === id);
+
+    if (file) {
+      const reader = new FileReader();
+      reader.onload = () => {
+        let readImage = reader.result as string;
+        this.myNotes[index].images.push(readImage);
+        this.notesService.updateAllNotes(this.myNotes[index]);
+        this.commonService.openSnackbar("Image uploaded", "Okay");
+      }
+      reader.readAsDataURL(file);
+    }
   }
 
   onNotePin(id: number) {

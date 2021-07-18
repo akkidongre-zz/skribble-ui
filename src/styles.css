@@ -96,6 +96,11 @@ mat-spinner {
     margin-left: -10px !important;
 }
 
+.hidden-input {
+    visibility: hidden;
+    width: 0.1px;
+}
+
 /* .mat-form-field-appearance-outline .mat-form-field-outline {
     color: grey;
 } */
