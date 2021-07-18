@@ -42,7 +42,7 @@
     </mat-form-field>
 
     <ng-container *ngIf="uploadedImages.length > 0">
-        <app-image-gallery [images]="uploadedImages" [deleteImageVisible]="deleteImageVisible" (delete)="onDeleteImage($event)"></app-image-gallery>
+        <app-image-gallery [images]="uploadedImages" [deleteImageVisible]="deleteImageVisible" [showDeleteButton]="true" (delete)="onDeleteImage($event)"></app-image-gallery>
     </ng-container>
 
     <div *ngIf="includesMaps">

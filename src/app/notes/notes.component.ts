@@ -206,6 +206,7 @@ export class NotesComponent implements OnInit, OnDestroy {
   }
 
   onCheckboxClick(todoIndex: number, id: number) {
+    console.log("Check box clicked");
     const i = this.myFilteredNotes.findIndex((nt) => nt.id === id);
     this.myFilteredNotes[i].todo[todoIndex].value = !this.myFilteredNotes[i].todo[todoIndex].value;
 

@@ -1,4 +1,6 @@
+import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
 import { Component, Inject, OnInit } from '@angular/core';
+import { FormArray, FormBuilder, FormGroup } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { Subscription } from 'rxjs';
 import { CommonService } from 'src/app/shared/common.service';
@@ -12,33 +14,37 @@ import { NotesService } from '../notes.service';
 })
 export class NoteDetailsComponent implements OnInit {
 
+  editNoteForm: FormGroup;
   editMode = false;
   note: Note;
+
+  includesImages = false;
+  includesMaps = false;
+  notePinned = false;
+
+  showUrlInputField = false;
+  addedLink = '';
+  latitude: string;
+  longitude: string;
 
   private allowedImageFormats = ['png', 'jpg', 'jpeg', 'webp'];
   uploadedImages: string[] = [];
   deleteImageVisible: {[key: number]: string} = {};
 
-  anyChanges = false;
-
-  latitude: string;
-  longitude: string;
-
-  includeMaps = false;
-
-  private mapLinkSub: Subscription;
+  todoChanges = false;
 
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: {data: Note, editMode: boolean},
     private dialogRef: MatDialogRef<any>,
     private commonService: CommonService,
-    private notesService: NotesService
+    private notesService: NotesService,
+    private fb: FormBuilder
   ) { }
 
   ngOnInit(): void {
     this.note = this.data.data;
     this.editMode = this.data.editMode;
-    this.uploadedImages = this.note.images;
+    this.uploadedImages = this.note.images.slice();
 
     for (let i = 0; i < this.note.images.length; i++) {
       this.deleteImageVisible[i] = 'hidden';
@@ -47,33 +53,120 @@ export class NoteDetailsComponent implements OnInit {
     if (this.note.includesMaps) {
       this.latitude = this.note.lat;
       this.longitude = this.note.long;
-      this.includeMaps = true;
+      this.includesMaps = true;
     }
 
-    this.mapLinkSub = this.notesService.mapLinkSubject.subscribe((link) => {
-      this.latitude = link[0];
-      this.longitude = link[1];
-      this.includeMaps = true;
-      // this.onAddLink();
-    });
+    console.log(this.note);
+
+    this.notePinned = this.note.isPinned;
+
+    this.initializeForm();
   }
 
-  onCheckboxClick(index: number) {
-    this.note.todo[index].value = !this.note.todo[index].value;
-    this.notesService.markTodo(this.note);
+  initializeForm() {
+    this.editNoteForm = this.fb.group({
+      title: [this.note.title],
+      content: [this.note.content],
+      todo: this.fb.array([]),
+    });
+
+    if (this.note.type === 'todo') {
+      this.populateTodo();
+    }
+  }
+
+  populateTodo() {
+    for (let i = 0; i < this.note.todo.length; i++) {
+      const todoForm = this.fb.group({
+        todoTitle: [this.note.todo[i].todoTitle],
+        value: [this.note.todo[i].value]
+      });
+      this.todo.push(todoForm);
+    }
+  }
+
+  get todo() {
+    return this.editNoteForm.controls["todo"] as FormArray;
   }
 
   onToggleEditMode() {
     this.editMode = !this.editMode;
   }
 
-  onClose() {
-    
-    this.dialogRef.close();
+  drop(event: CdkDragDrop<string[]>) {
+    let todoArr = this.todo.value;
+    moveItemInArray(todoArr, event.previousIndex, event.currentIndex);
+    this.todo.patchValue(todoArr);
   }
 
-  onEdit() {
-    
+  addNewItemToList() {
+    const todoForm = this.fb.group({
+      todoTitle: [''],
+      value: [false]
+    });
+    this.todo.push(todoForm);
+  }
+
+  deleteItemFromList(index: number, e: Event) {
+    e.stopPropagation();
+    this.todo.removeAt(index);
+  }
+
+  onAddLinkClick(e: Event) {
+    e.stopPropagation();
+    this.showUrlInputField = true;
+  }
+
+  onAddLink(e: Event) {
+    const openSnackbar = () => {
+      this.commonService.openSnackbar("Please add a valid url");
+      this.addedLink = '';
+    }
+
+    e.stopPropagation();
+    if (!this.addedLink) {
+      this.commonService.openSnackbar("Please add a valid url");
+      this.addedLink = '';
+      return;
+    }
+    const urlRegex = /(((https?:\/\/)|(www\.))[^\s]+)/g;
+
+    if (!this.addedLink.match(urlRegex)) {
+      openSnackbar();
+      return;
+    }
+
+    if (!this.addedLink.includes("@")) {
+      openSnackbar();
+      return;
+    }
+
+    let splitParams = this.addedLink.split("@");
+
+    if (splitParams.length == 1) {
+      openSnackbar();
+      return;
+    }
+
+    const latLongValues = splitParams[1].split(",");
+    if (latLongValues.length < 2) {
+      openSnackbar();
+      return;
+    }
+
+    this.latitude = latLongValues[0];
+    this.longitude = latLongValues[1];
+
+    this.includesMaps = true;
+    this.showUrlInputField = false;
+    this.addedLink = '';
+  }
+
+  onRemoveLink() {
+    this.addedLink = '';
+    this.includesMaps = false;
+    this.latitude = '';
+    this.longitude = '';
   }
 
   onImageUpload(event: Event) {
@@ -105,31 +198,47 @@ export class NoteDetailsComponent implements OnInit {
   }
 
   onDeleteImage(index: number) {
-    this.anyChanges = true;
     this.uploadedImages.splice(index,1);
   }
 
-  onAddLink() {
-    // this.note.includesMaps = true;
-    // this.note.lat = this.latitude;
-    // this.note.long = this.longitude;
-    
+  onPin(e: Event) {
+    this.notePinned = !this.notePinned;
   }
 
-  onDeleteMap() {
-    this.note.includesMaps = false;
-    this.note.lat = '';
-    this.note.long = '';
-    this.latitude = '';
-    this.longitude = '';
-    this.includeMaps = false;
-    this.notesService.updateAllNotes(this.note);
+  onCheckboxClick(index: number) {
+    console.log("Checkbox clicked from note detai;s");
+    this.note.todo[index].value = !this.note.todo[index].value;
+    this.notesService.markTodo(this.note);
+    this.todoChanges = true;
   }
 
-  ngOnDestroy() {
-    if (this.mapLinkSub) {
-      this.mapLinkSub.unsubscribe();
+  onSubmit() {
+    let todoList = this.todo.value;
+    for (let i = todoList.length-1; i >= 0; i--) {
+      if (!todoList[i].todoTitle) {
+        todoList.splice(i,1);
+      }
     }
+
+    const editedNote: Note = {
+      ...this.note,
+      title: this.editNoteForm.get('title')?.value,
+      content: this.editNoteForm.get('content')?.value,
+      todo: todoList,
+      includesImages: this.uploadedImages.length > 0 ? true : false,
+      includesMaps: this.includesMaps,
+      images: this.uploadedImages,
+      isPinned: this.notePinned,
+      lat: this.latitude,
+      long: this.longitude
+    }
+
+    this.notesService.updateAllNotes(editedNote);
+    this.dialogRef.close();
+  }
+
+  onClose() {
+    this.dialogRef.close();
   }
 
 }

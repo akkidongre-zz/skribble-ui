@@ -3,6 +3,21 @@
     word-wrap: break-word;
 }
 
+:host::ng-deep.mat-form-field-underline {
+    width: 0%;
+    pointer-events: none;
+    transform: none;
+    height: 0px;
+    background-color: #fefefe;
+}
+
+.button-row {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    width: 64px;
+}
+
 .close-icon-button {
     position: absolute;
     top: 0;

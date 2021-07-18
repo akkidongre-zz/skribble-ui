@@ -16,6 +16,9 @@ export class ImageGalleryComponent implements OnInit {
   @Output()
   delete = new EventEmitter<number>();
 
+  @Input()
+  showDeleteButton: boolean;
+
   constructor() { }
 
   ngOnInit(): void {

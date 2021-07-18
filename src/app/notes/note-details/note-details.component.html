@@ -1,4 +1,4 @@
-<ng-container *ngIf="uploadedImages.length > 0">
+<!-- <ng-container *ngIf="uploadedImages.length > 0">
     <app-image-gallery [images]="uploadedImages" [deleteImageVisible]="deleteImageVisible" (delete)="onDeleteImage($event)"></app-image-gallery>
 </ng-container>
 
@@ -18,4 +18,88 @@
 <mat-dialog-actions align="end" *ngIf="!editMode">
     <button mat-flat-button (click)="onClose()">Close</button>
     <button mat-flat-button *ngIf="!editMode" (click)="onToggleEditMode()">Edit Note</button>
+</mat-dialog-actions> -->
+<ng-container *ngIf="uploadedImages.length > 0">
+    <app-image-gallery [images]="uploadedImages" [deleteImageVisible]="deleteImageVisible" [showDeleteButton]="editMode" (delete)="onDeleteImage($event)"></app-image-gallery>
+</ng-container>
+
+<h2 mat-dialog-title>
+    <ng-container *ngIf="!editMode">{{note.title}}</ng-container>
+    <input type="text" matInput [(ngModel)]="note.title" placeholder="Title" *ngIf="editMode">
+</h2>
+
+<mat-dialog-content>
+    <app-note-content [note]="note" *ngIf="!editMode" (checkboxClick)="onCheckboxClick($event)"></app-note-content>
+    <app-maps *ngIf="!editMode && includesMaps" [latitude]="latitude" [longitude]="longitude" [height]="'200px'" [showDeleteButton]="false"></app-maps>
+
+    <ng-container *ngIf="editMode">
+        <form [formGroup]="editNoteForm" (ngSubmit) = "onSubmit()">
+            <mat-form-field appearance="standard" floatLabel="never" class="full-width" *ngIf = "note.type==='note'">
+                <textarea matInput [rows]="5" placeholder="Skribble a note..." formControlName="content"></textarea>
+            </mat-form-field>
+
+            <ng-container *ngIf = "note.type === 'todo'">
+                <div formArrayName="todo" cdkDropList (cdkDropListDropped)="drop($event)">
+                    <ng-container *ngFor="let todoForm of todo.controls; let i = index">
+                        <div [formGroupName]="i" cdkDrag>
+                            <mat-form-field appearance="standard" floatLabel="never" class="full-width">
+                                <mat-checkbox matPrefix formControlName="value"></mat-checkbox>
+                                
+                                <input matInput type="text" class="ms-2" formControlName="todoTitle" placeholder="Skribble a list item...">
+                                
+                                <div class="button-row" matSuffix>
+                                    <mat-icon cdkDragHandle matTooltip="Drag" class="cursor-grab">drag_indicator</mat-icon>
+                                    <mat-icon (click)="deleteItemFromList(i, $event)" color="warn" matTooltip="Delete this item" class="cursor-pointer">close</mat-icon>
+                                </div>
+                            </mat-form-field>
+                        </div>
+                    </ng-container>
+                    <button mat-button type="button" (click)="addNewItemToList()" color="primary" matTooltip="Add new item" >
+                        <mat-icon>add</mat-icon>
+                        Add list item
+                    </button>
+                </div>
+            </ng-container>
+
+            <mat-form-field appearance="standard" floatLabel="never" class="full-width url-input-div" *ngIf="showUrlInputField">
+                <input matInput type="url" placeholder="Eg: https://www.google.com/maps/@12.7647389,75.2362377,15z" [(ngModel)]="addedLink" [ngModelOptions]="{standalone: true}">
+                <button matSuffix mat-button color="primary" (click)="onAddLink($event)" type="button">
+                    Save url
+                </button> 
+            </mat-form-field>
+
+            <div *ngIf="includesMaps">
+                <app-maps [latitude]="latitude" [longitude]="longitude" [height]="'200px'" [showDeleteButton]="true" (delete)="onRemoveLink()"></app-maps>
+            </div>
+
+            <div class="controls-div d-flex justify-content-between" >
+                <div class="icon-control">        
+                    <button *ngIf="!includesMaps" mat-icon-button type="button" class="me-2" matTooltip="Insert google maps link" (click)="onAddLinkClick($event)">
+                        <mat-icon color="primary" [class.dark-grey]="!showUrlInputField">location_on_outline</mat-icon>
+                    </button>
+                    <button *ngIf="includesMaps" mat-icon-button type="button" class="me-2" matTooltip="Remove google maps link" (click)="onRemoveLink();$event.stopPropagation()">
+                        <mat-icon color="warn">location_off_outline</mat-icon>
+                    </button>
+        
+                    <input type="file" #img class="hidden-input" (change)="onImageUpload($event)" accept=".jpg,.jpeg,.png,.webp">
+                    <button mat-icon-button type="button" class="me-2" matTooltip="Attach an image" (click)="img.click()">
+                        <mat-icon class="dark-grey">insert_photo_outline</mat-icon>
+                    </button>
+        
+                    <button mat-icon-button type="button" class="me-2" matTooltip="Pin this note" (click)="onPin($event)">
+                        <mat-icon [class.dark-grey]="!notePinned" color="accent">push_pin_outline</mat-icon>
+                    </button>
+                </div>
+                <div class="save-control">
+                    <button mat-button color="primary" matTooltip="Save note" type="submit">Save</button>
+                </div>
+            </div>
+        </form>
+    </ng-container>
+</mat-dialog-content>
+<mat-dialog-actions align="end" *ngIf="!editMode">
+    <button mat-button (click)="onClose()">Close</button>
+    <button mat-button (click)="onToggleEditMode()" color="primary">
+        Edit Note
+    </button>
 </mat-dialog-actions>
