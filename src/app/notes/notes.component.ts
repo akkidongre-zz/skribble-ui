@@ -78,6 +78,11 @@ export class NotesComponent implements OnInit, OnDestroy {
     this.myFilteredNotes = [];
     this.myFilteredPinnedNotes = [];
     this.myFilteredOtherNotes = [];
+
+    // This is a very raw implementation. better is to use image, map etc as types
+    // Or provide filters by category
+    const allImageWords = "imagespicturesphotos";
+    const allMapWords = "locationsmaps";
     
     for (let i = 0; i < this.myNotes.length; i++) {
       const lowerKey = this.searchKey.trim().toLowerCase();
@@ -95,6 +100,10 @@ export class NotesComponent implements OnInit, OnDestroy {
             include = true;
           }
         }
+      } else if (allImageWords.includes(lowerKey) && this.myNotes[i].images.length > 0) {
+        include = true;
+      } else if (allMapWords.includes(lowerKey) && this.myNotes[i].includesMaps) {
+        include = true;
       }
 
       if (include) {
