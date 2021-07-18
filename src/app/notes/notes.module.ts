@@ -19,7 +19,6 @@ import { LeafletModule } from '@asymmetrik/ngx-leaflet';
 import { NotesComponent } from './notes.component';
 import { NoteComponent } from './note/note.component';
 import { CreateNoteComponent } from './create-note/create-note.component';
-import { EditNoteComponent } from './edit-note/edit-note.component';
 import { NoteDetailsComponent } from './note-details/note-details.component';
 import { NoteContentComponent } from './note/note-content/note-content.component';
 import { ImageGalleryComponent } from './image-gallery/image-gallery.component';
@@ -31,7 +30,6 @@ import { MapsComponent } from './maps/maps.component';
     NotesComponent,
     NoteComponent,
     CreateNoteComponent,
-    EditNoteComponent,
     NoteDetailsComponent,
     NoteContentComponent,
     ImageGalleryComponent,
