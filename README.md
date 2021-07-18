@@ -6,22 +6,33 @@ This project was generated with [Angular CLI](https://github.com/angular/angular
 
 Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
 
-## Code scaffolding
+## Application architecture
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
+There are 2 main parts in the application, Login and notes.
 
-## Build
+Login component, header component is implemented in the app module.
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory.
+Notes is implemented as a lazy loaded module to reduce initial load time of the app.
 
-## Running unit tests
+Login component contains - Email based signin/signup form and login with google option.
 
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
+Notes module contains - create, edit, view note features along with maps and search functions.
 
-## Running end-to-end tests
+Auth and notes services are used for authentication and actions on notes respectively.
 
-Run `ng e2e` to execute the end-to-end tests via a platform of your choice. To use this command, you need to first add a package that implements end-to-end testing capabilities.
+## What could have been better
 
-## Further help
+1. Create component could have been split up and reused as edit form as well.
+2. Masonry layout could have been made more efficient.
+3. Now, search text is used to filter the notes by type as well. There could have been separate filters.
+4. Repitition of code is present which can be reduced.
+5. NgRx is not implemented. It can be implemented.
 
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.io/cli) page.
+## Libraries used and why?
+
+1. Angular Material - For all the material design components.
+2. Bootstrap - For its, beautiful, near perfect grid system.
+3. angularx-social-login - To implement login with google
+4. masonry-layout and ngx-masonry - For the auto rearranging card layout like google keep.
+5. Leaflet & asymmetrik-ngx-leaflet - To display maps. It is open source.
+
