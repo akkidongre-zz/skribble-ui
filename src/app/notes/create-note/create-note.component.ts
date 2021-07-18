@@ -196,18 +196,18 @@ export class CreateNoteComponent implements OnInit {
   validateForm(formType: string): boolean {
     const titleVal = this.createNoteForm.get('title')?.value;
     const contentVal = this.createNoteForm.get('content')?.value;
-    
-    if (formType === "note") {
-      if (!titleVal && !contentVal && this.uploadedImages.length === 0) {
-        return false;
-      }
-    }
 
-    if (formType === "todo") {
-      if (!titleVal && this.todo.value.length === 0 && this.uploadedImages.length === 0) {
-        return false;
-      } else if (!titleVal && this.uploadedImages.length === 0) {
-        let checkFlag = false;
+    if (titleVal) return true;
+
+    if (contentVal) return true;
+
+    if (this.uploadedImages.length > 0) return true;
+
+    if (this.includesMaps) return true;
+
+    if (formType === 'todo') {
+      let checkFlag = false;
+      
         for (let i = 0; i < this.todo.value.length; i++) {
           if (this.todo.value[i].todoTitle){
             checkFlag = true;
@@ -215,10 +215,9 @@ export class CreateNoteComponent implements OnInit {
         }
 
         return checkFlag;
-      }
     }
 
-    return true;
+    return false;
   }
 
   onSubmit() {
