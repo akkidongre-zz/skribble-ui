@@ -20,6 +20,6 @@ export class CommonService {
   }
 
   validateImage(file: File) {
-    
+
   }
 }

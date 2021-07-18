@@ -166,7 +166,7 @@ export class NotesComponent implements OnInit, OnDestroy {
       height: "auto",
       width: "600px",
       minWidth: "350px",
-      minHeight: "200px",
+      minHeight: "100px",
       maxHeight: maxHeight,
       data: {
         data: noteData,

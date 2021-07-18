@@ -41,7 +41,9 @@ export class CreateNoteComponent implements OnInit {
       this.showTitleField = true;
       this.contentRowsCount = 3;
     } else {
-      this.onClose();
+      if(!(event.target as HTMLElement)?.closest('.mat-snack-bar-container')) {
+        this.onClose();
+      }
     }
   }
 
@@ -164,16 +166,23 @@ export class CreateNoteComponent implements OnInit {
     const contentVal = this.createNoteForm.get('content')?.value;
     
     if (formType === "note") {
-      if (!titleVal && !contentVal) {
+      if (!titleVal && !contentVal && this.uploadedImages.length === 0) {
         return false;
       }
     }
 
     if (formType === "todo") {
-      if (!titleVal && this.todo.value.length === 0) {
+      if (!titleVal && this.todo.value.length === 0 && this.uploadedImages.length === 0) {
         return false;
-      } else if (!titleVal && !this.todo.value[0].todoTitle) {
-        return false;
+      } else if (!titleVal && this.uploadedImages.length === 0) {
+        let checkFlag = false;
+        for (let i = 0; i < this.todo.value.length; i++) {
+          if (this.todo.value[i].todoTitle){
+            checkFlag = true;
+          }
+        }
+
+        return checkFlag;
       }
     }
 
@@ -194,12 +203,19 @@ export class CreateNoteComponent implements OnInit {
 
     const id = this.notesService.generateNoteId();
 
+    let todoList = this.todo.value;
+    for (let i = todoList.length-1; i >= 0; i--) {
+      if (!todoList[i].todoTitle) {
+        todoList.splice(i,1);
+      }
+    }
+
     const note: Note = {
       id: id,
       title: this.createNoteForm.get('title')?.value,
       content: this.createNoteForm.get('content')?.value,
       author: this.authService.getUser().id,
-      todo: this.todo.value,
+      todo: todoList,
       type: formType,
       includesUrl: this.includesUrl,
       includesImages: this.uploadedImages.length > 0 ? true : false,

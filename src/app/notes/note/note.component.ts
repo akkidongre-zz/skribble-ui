@@ -32,6 +32,7 @@ export class NoteComponent implements OnInit {
   actionsVisibility = 'hidden';
 
   emptyNote = false;
+  noteTitle = '';
 
   @ViewChild('img')
   imageInput: ElementRef;
@@ -41,7 +42,17 @@ export class NoteComponent implements OnInit {
   ngOnInit(): void {
     if (!this.note.title && !this.note.content && this.note.images.length === 0 && this.note.todo.length === 0) {
       this.emptyNote = true;
-    } 
+    }
+
+    this.noteTitle = this.note.title;
+
+    if (this.emptyNote) {
+      this.noteTitle = 'Empty note';
+    } else if (!this.note.title) {
+      this.noteTitle = 'No title';
+    }
+
+    
   }
 
   onMouseOver() {
@@ -63,7 +74,6 @@ export class NoteComponent implements OnInit {
   }
 
   onAddImage(e: Event) {
-    console.log(e);
     this.addImage.emit(e);
   }
 

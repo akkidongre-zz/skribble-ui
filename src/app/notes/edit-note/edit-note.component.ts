@@ -133,6 +133,34 @@ export class EditNoteComponent implements OnInit {
     this.imageUpload.emit(event);
   }
 
+  validateForm(formType: string): boolean {
+    const titleVal = this.noteTitle;
+    const contentVal = this.editNoteForm.get('content')?.value;
+    
+    if (formType === "note") {
+      if (!titleVal && !contentVal && this.imagesList.length === 0) {
+        return false;
+      }
+    }
+
+    if (formType === "todo") {
+      if (!titleVal && this.todo.value.length === 0 && this.imagesList.length === 0) {
+        return false;
+      } else if (!titleVal && this.imagesList.length === 0) {
+        let checkFlag = false;
+        for (let i = 0; i < this.todo.value.length; i++) {
+          if (this.todo.value[i].todoTitle){
+            checkFlag = true;
+          }
+        }
+
+        return checkFlag;
+      }
+    }
+
+    return true;
+  }
+
   onSubmit() {
     if (this.imagesList.length > 0) {
       this.includesImages = true;
@@ -140,11 +168,24 @@ export class EditNoteComponent implements OnInit {
       this.includesImages = false;
     }
 
+    const isValid = this.validateForm(this.note.type);
+    if (!isValid) {
+      this.commonService.openSnackbar("Please enter a value to save the note", "Okay");
+      return;
+    }
+
+    let todoList = this.todo.value;
+    for (let i = todoList.length-1; i >= 0; i--) {
+      if (!todoList[i].todoTitle) {
+        todoList.splice(i,1);
+      }
+    }
+
     this.note = {
       ...this.note,
       title: this.noteTitle,
       content: this.editNoteForm.get('content')?.value,
-      todo: this.todo.value,
+      todo: todoList,
       includesImages: this.includesImages,
       includesMaps: this.includesMaps,
       includesUrl: this.includesUrl,
