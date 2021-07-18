@@ -43,7 +43,8 @@ export class NoteComponent implements OnInit {
   constructor() { }
 
   ngOnInit(): void {
-    if (!this.note.title && !this.note.content && this.note.images.length === 0 && this.note.todo.length === 0) {
+    if (!this.note.title && !this.note.content && this.note.images.length === 0 && 
+      this.note.todo.length === 0 && !this.note.includesMaps) {
       this.emptyNote = true;
     }
 

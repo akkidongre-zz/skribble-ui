@@ -22,15 +22,6 @@
                     </app-note>
                 </div>
             </ngx-masonry>
-            <!-- <p class="grey" *ngIf = "pinnedNotes.length === 0">There's nothing in here. Try pinning a note.</p>
-            <ngx-masonry [ordered]="true">
-                <div ngxMasonryItem [prepend]="true" *ngFor="let note of pinnedNotes; let i = index" class="masonry-item">
-                    <app-note [note] = "note" (addImage)="onAddImage(note.id)" (click) = "onClickNote(note.id)" 
-                    (checkboxClick)="onCheckboxClick($event, note.id)" (pinClick)="onNotePin($event)"
-                    (delete)="onDeleteNote($event)" (editMode)="onEditNote($event)">
-                    </app-note>
-                </div>
-            </ngx-masonry> -->
         </div>
     </div>
 
@@ -44,7 +35,7 @@
         <div class="col-12">
             <h4 class="grey">OTHERS</h4>
             <p class="grey" *ngIf="myFilteredOtherNotes.length===0">Start Skribbling! Come on, add a note.</p>
-            <ngx-masonry>
+            <ngx-masonry [ordered]="true">
                 <div ngxMasonryItem [prepend]="true" *ngFor="let note of myFilteredOtherNotes; let i=index" class="masonry-item">
                     <app-note [note] = "note" (addImage)="onAddImage($event,note.id)" (click) = "onClickNote($event, note.id)" 
                     (checkboxClick)="onCheckboxClick($event, note.id)" (pinClick)="onNotePin($event)"
@@ -52,15 +43,6 @@
                     </app-note>
                 </div>
             </ngx-masonry>
-            <!-- <p class="grey" *ngIf="myNotes.length===0">Start Skribbling! Come on, add a note.</p>
-            <ngx-masonry>
-                <div ngxMasonryItem [prepend]="true" *ngFor="let note of myOtherNotes; let i=index" class="masonry-item">
-                    <app-note [note] = "note" (addImage)="onAddImage(note.id)" (click) = "onClickNote(note.id)" 
-                    (checkboxClick)="onCheckboxClick($event, note.id)" (pinClick)="onNotePin($event)"
-                    (delete)="onDeleteNote($event)" (editMode)="onEditNote($event)">
-                    </app-note>
-                </div>
-            </ngx-masonry> -->
         </div>
     </div>
 
