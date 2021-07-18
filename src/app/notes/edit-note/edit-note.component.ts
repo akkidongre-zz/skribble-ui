@@ -51,9 +51,9 @@ export class EditNoteComponent implements OnInit {
 
   ngOnInit(): void {
     this.editNoteForm = this.fb.group({
-      "title": [this.note.title],
-      "content": [this.note.content],
-      "todo": this.fb.array([])
+      title: [this.note.title],
+      content: [this.note.content],
+      todo: this.fb.array([])
     });
     
     if (this.note.type === 'todo') {

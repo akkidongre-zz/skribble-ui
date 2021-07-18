@@ -202,7 +202,6 @@ export class CreateNoteComponent implements OnInit {
     }
 
     const id = this.notesService.generateNoteId();
-
     let todoList = this.todo.value;
     for (let i = todoList.length-1; i >= 0; i--) {
       if (!todoList[i].todoTitle) {

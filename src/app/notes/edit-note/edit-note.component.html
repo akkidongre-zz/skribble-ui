@@ -8,7 +8,7 @@
     </mat-form-field>
 
     <ng-container *ngIf = "todoSelected">
-        <div formArrayName="todo" cdkDropList (cdkDropListDropped)="drop($event)">
+        <div formArrayName="todo" cdkDropList (cdkDropListDropped)="drop($event)" id="todoForm">
             <ng-container *ngFor="let todoForm of todo.controls; let i = index">
                 <div [formGroupName]="i" cdkDrag>
                     <mat-form-field appearance="standard" floatLabel="never" class="full-width">

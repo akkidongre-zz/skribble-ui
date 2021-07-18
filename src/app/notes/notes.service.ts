@@ -18,7 +18,14 @@ export class NotesService {
   ) { }
 
   generateNoteId() {
-    return (this.allNotes.length + 1);
+    let maxId = 0;
+    for (let i = 0; i < this.allNotes.length; i++) {
+      if (this.allNotes[i].id > maxId) {
+        maxId = this.allNotes[i].id;
+      }
+    }
+
+    return (maxId + 1);
   }
 
   getAllNotes() {
