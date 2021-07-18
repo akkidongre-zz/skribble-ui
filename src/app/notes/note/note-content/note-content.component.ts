@@ -20,12 +20,6 @@ export class NoteContentComponent implements OnInit {
 
   noteTodo: {todoTitle: string, value: boolean}[] = [];
 
-  googleMapPresent = false;
-  googleMapLink: SafeUrl;
-  
-  latitude: string;
-  longitude: string;
-
   constructor(
     private domSanitizer: DomSanitizer
   ) { }

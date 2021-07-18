@@ -1,9 +1,6 @@
 <div *ngIf = "noteType === 'note' && noteContent && noteContent.length > 0">
     <div [innerHtml]="noteContent"></div>
 </div>
-<div *ngIf="note.includesMaps">
-    <app-maps [latitude]="latitude" [longitude]="longitude"></app-maps>
-</div>
 <div *ngIf="noteType === 'todo' && note.todo.length > 0">
     <mat-list>
         <mat-list-item *ngFor="let item of noteTodo; let i = index">

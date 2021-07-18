@@ -12,6 +12,7 @@
     <app-edit-note *ngIf="editMode" [note]="note" [noteTitle]="note.title" [imagesList] = "uploadedImages"
     (imageUpload)="onImageUpload($event)" (changeMode) = "onToggleEditMode()" (close)="onClose()"
     ></app-edit-note>
+    <app-maps *ngIf="note.includesMaps" [latitude]="latitude" [longitude]="longitude" [height]="'200px'"></app-maps>
 </mat-dialog-content>
 
 <mat-dialog-actions align="end" *ngIf="!editMode">

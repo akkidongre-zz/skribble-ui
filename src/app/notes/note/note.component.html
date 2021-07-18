@@ -5,8 +5,12 @@
         <mat-card-title><h2 [class.grey]="emptyNote || !note.title">{{noteTitle}}</h2></mat-card-title>
     </mat-card-header>
     
-    <mat-card-content *ngIf="note.content || note.todo.length > 0">
-        <app-note-content [note]="note" (checkboxClick)="onCheckboxClick($event)"></app-note-content>
+    <mat-card-content *ngIf="note.content || note.todo.length > 0 || note.includesMaps">
+        <app-note-content *ngIf="note.content || note.todo.length > 0" 
+            [note]="note" (checkboxClick)="onCheckboxClick($event)"></app-note-content>
+        <div *ngIf="note.includesMaps">
+            <app-maps [latitude]="latitude" [longitude]="longitude" [height]="'150px'"></app-maps>
+        </div>
     </mat-card-content>
     <mat-card-actions [ngStyle]="{'visibility': actionsVisibility}">
         <mat-icon color="primary" matTooltip="Edit this note" (click)="onEdit($event)">edit_outline</mat-icon>

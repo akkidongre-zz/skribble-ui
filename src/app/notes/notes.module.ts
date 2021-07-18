@@ -14,6 +14,8 @@ import { MatGridListModule } from '@angular/material/grid-list';
 
 import { DragDropModule } from '@angular/cdk/drag-drop';
 
+import { LeafletModule } from '@asymmetrik/ngx-leaflet';
+
 import { NotesComponent } from './notes.component';
 import { NoteComponent } from './note/note.component';
 import { CreateNoteComponent } from './create-note/create-note.component';
@@ -48,7 +50,8 @@ import { MapsComponent } from './maps/maps.component';
     DragDropModule,
     MatDialogModule,
     MatDividerModule,
-    MatGridListModule
+    MatGridListModule,
+    LeafletModule
   ]
 })
 export class NotesModule { }

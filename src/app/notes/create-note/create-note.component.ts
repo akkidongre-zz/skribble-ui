@@ -77,7 +77,8 @@ export class CreateNoteComponent implements OnInit {
     return this.createNoteForm.controls["todo"] as FormArray;
   }
 
-  onAddLinkClick() {
+  onAddLinkClick(e: Event) {
+    e.stopPropagation();
     this.showUrlInputField = true;
   }
 
@@ -124,18 +125,14 @@ export class CreateNoteComponent implements OnInit {
     this.includesMaps = true;
     this.showUrlInputField = false;
     this.addedLink = '';
+  }
 
-    // https://www.google.com/maps/place/Bukit+Batok,+Singapore/@1.3561196,103.7359319,14z/data=!3m1!4b1!4m13!1m7!3m6!1s0x31da11238a8b9375:0x887869cf52abf5c4!2sSingapore!3b1!8m2!3d1.352083!4d103.819836!3m4!1s0x31da1049969ce5c9:0xae12582d45657edb!8m2!3d1.3590015!4d103.7636375
-    // https://www.google.com/maps/@12.7647389,75.2362377,15z
-
-    // const newValue = this.createNoteForm.get('content')?.value + `\n${this.addedLink}\n`;
-    // this.createNoteForm.patchValue({
-    //   "content": newValue
-    // });
-
-    // this.showUrlInputField = false;
-    // this.addedLink = '';
-    // this.includesUrl = true;
+  onRemoveLink(e: Event) {
+    e.stopPropagation();
+    this.addedLink = '';
+    this.includesMaps = false;
+    this.latitude = '';
+    this.longitude = '';
   }
 
   addNewItemToList() {
@@ -254,7 +251,7 @@ export class CreateNoteComponent implements OnInit {
       type: formType,
       includesUrl: this.includesUrl,
       includesImages: this.uploadedImages.length > 0 ? true : false,
-      includesMaps: false,
+      includesMaps: this.includesMaps,
       images: this.uploadedImages,
       isPinned: this.notePinned,
       lat: this.latitude,
@@ -281,6 +278,9 @@ export class CreateNoteComponent implements OnInit {
     this.notePinned = false;
     this.noteWithImage = false;
     this.contentRowsCount = 1;
+    this.includesMaps = false;
+    this.latitude = '';
+    this.longitude = '';
   }
 
 }

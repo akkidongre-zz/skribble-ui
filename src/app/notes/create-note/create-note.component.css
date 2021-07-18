@@ -58,3 +58,9 @@
     position: absolute;
     right: 0;
 }
+
+.map-delete-button {
+    position: absolute;
+    right: 10px;
+    z-index: 1000;
+}

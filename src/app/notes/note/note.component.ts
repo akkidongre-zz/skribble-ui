@@ -34,6 +34,9 @@ export class NoteComponent implements OnInit {
   emptyNote = false;
   noteTitle = '';
 
+  latitude: string;
+  longitude: string;
+
   @ViewChild('img')
   imageInput: ElementRef;
 
@@ -52,7 +55,10 @@ export class NoteComponent implements OnInit {
       this.noteTitle = 'No title';
     }
 
-    
+    if (this.note.includesMaps) {
+      this.latitude = this.note.lat;
+      this.longitude = this.note.long;
+    }
   }
 
   onMouseOver() {

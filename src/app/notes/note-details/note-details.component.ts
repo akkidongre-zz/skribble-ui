@@ -19,6 +19,9 @@ export class NoteDetailsComponent implements OnInit {
 
   anyChanges = false;
 
+  latitude: string;
+  longitude: string;
+
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: {data: Note, editMode: boolean},
     private dialogRef: MatDialogRef<any>,
@@ -32,6 +35,11 @@ export class NoteDetailsComponent implements OnInit {
 
     for (let i = 0; i < this.note.images.length; i++) {
       this.deleteImageVisible[i] = 'hidden';
+    }
+
+    if (this.note.includesMaps) {
+      this.latitude = this.note.lat;
+      this.longitude = this.note.long;
     }
   }
 
