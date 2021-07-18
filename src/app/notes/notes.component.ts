@@ -152,16 +152,21 @@ export class NotesComponent implements OnInit, OnDestroy {
   }
 
   onEditNote(id: number) {
-    const index = this.myNotes.findIndex((nt) => nt.id === id);
-    this.onClickNote(id, true);
+    const noteData = this.myNotes.find((nt) => nt.id === id);
+
+    if (!noteData) {
+      return;
+    }
+
+    this.openDialog(noteData, true);
   }
 
-  onClickNote(id: number, editMode=false) {
-    const noteData = this.myNotes.find((nt) => nt.id === id);
+  openDialog(noteData: Note, editMode: boolean = false) {
     let maxHeight = "600px";
     if (this.deviceWidth <= 768) {
       maxHeight = "500px";
     }
+
     const dialogRef = this.matDialog.open(NoteDetailsComponent, {
       height: "auto",
       width: "600px",
@@ -173,9 +178,20 @@ export class NotesComponent implements OnInit, OnDestroy {
         editMode: editMode
       }
     });
+  }
 
-    dialogRef.afterClosed().subscribe((response) => {
-    })
+  onClickNote(e: Event, id: number) {
+    const noteData = this.myNotes.find((nt) => nt.id === id);
+    
+    if (!noteData) {
+      return;
+    }
+
+    if ((e.target as HTMLElement).classList.contains('url-link')) {
+      return;
+    }
+
+    this.openDialog(noteData);
   }
 
   onAddImage(event: Event, id: number) {

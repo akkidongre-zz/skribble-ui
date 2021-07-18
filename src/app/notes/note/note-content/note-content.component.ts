@@ -47,39 +47,9 @@ export class NoteContentComponent implements OnInit {
   parseUrls(text: string) {
     var urlRegex = /(https?:\/\/[^\s]+)/g;
     return text.replace(urlRegex, function(url) {
-      return '<a href="' + url + '" target="_blank">' + url + '</a>';
+      return '<a href="' + url + '" target="_blank" class="url-link">' + url + '</a>';
     });
-  }  
-
-  // splitFunction() {
-  //   if (this.noteType === 'note') {
-  //     for (let i = 0; i < this.noteContent.length; i++) {
-  //       let tempObj = {
-  //         text: '',
-  //         link: '',
-  //         linkName: '',
-  //         image: ''
-  //       };
-  //       if (this.noteContent[i].match(/(((https?:\/\/)|(www\.))[^\s]+)/g)) {
-  //         tempObj.link = this.noteContent[i];
-  //         // tempObj.linkName = new URL(this.noteContent[i]).host;
-
-  //         // if (this.noteContent[i].includes("www.google.com/maps")){
-  //         //   let mapsArr = this.noteContent[i].split("@");
-  //         //   let coords = mapsArr[1].split(",");
-  //         //   this.latitude = coords[0];
-  //         //   this.longitude = coords[1];
-  //         //   this.googleMapPresent = true;
-  //         //   let mapLink = `https://maps.google.com/maps?q=${this.latitude},${this.longitude}&hl=es;z=14&amp;output=embed`
-  //         //   this.googleMapLink = this.domSanitizer.bypassSecurityTrustResourceUrl(mapLink);
-  //         // }
-  //       } else {
-  //         tempObj.text = this.noteContent[i];
-  //       }
-  //       this.noteContentArr.push(tempObj);
-  //     }
-  //   }
-  // }
+  }
 
   onCheckboxClick(event: Event) {
     event.stopPropagation();
