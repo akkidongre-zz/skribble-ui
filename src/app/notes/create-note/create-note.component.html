@@ -34,15 +34,19 @@
         </div>
     </ng-container>
 
-    <!-- <mat-form-field appearance="standard" floatLabel="never" class="full-width url-input-div" *ngIf="showUrlInputField">
-        <input matInput type="url" placeholder="Enter a url..." [(ngModel)]="addedLink" [ngModelOptions]="{standalone: true}">
+    <mat-form-field appearance="standard" floatLabel="never" class="full-width url-input-div" *ngIf="showUrlInputField">
+        <input matInput type="url" placeholder="Eg: https://www.google.com/maps/@12.7647389,75.2362377,15z" [(ngModel)]="addedLink" [ngModelOptions]="{standalone: true}">
         <button matSuffix mat-button color="primary" (click)="onAddLink($event)" type="button">
             Save url
         </button> 
-    </mat-form-field> -->
+    </mat-form-field>
 
     <ng-container *ngIf="uploadedImages.length > 0">
         <app-image-gallery [images]="uploadedImages" [deleteImageVisible]="deleteImageVisible" (delete)="onDeleteImage($event)"></app-image-gallery>
+    </ng-container>
+
+    <ng-container *ngIf="includesMaps">
+        <app-maps [latitude]="latitude" [longitude]="longitude"></app-maps>
     </ng-container>
     
     <div class="controls-div d-flex justify-content-between" *ngIf = "showTitleField">
@@ -51,9 +55,9 @@
                 <mat-icon color="primary" [class.dark-grey]="!todoSelected">checklist</mat-icon>
             </button>
 
-            <!-- <button mat-icon-button type="button" class="me-2" matTooltip="Insert a link" (click)="onAddLinkClick()">
-                <mat-icon color="primary" [class.dark-grey]="!showUrlInputField">link</mat-icon>
-            </button> -->
+            <button mat-icon-button type="button" class="me-2" matTooltip="Insert google maps link" (click)="onAddLinkClick()">
+                <mat-icon color="primary" [class.dark-grey]="!showUrlInputField">location_on_outline</mat-icon>
+            </button>
 
             <input type="file" #img class="hidden-input" (change)="onImageUpload($event)" accept=".jpg,.jpeg,.png,.webp">
             <button mat-icon-button type="button" class="me-2" matTooltip="Attach an image" (click)="img.click()">

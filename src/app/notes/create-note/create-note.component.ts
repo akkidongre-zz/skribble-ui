@@ -35,6 +35,10 @@ export class CreateNoteComponent implements OnInit {
 
   deleteImageVisible: {[key: number]: string} = {};
 
+  includesMaps = false;
+  latitude = '';
+  longitude = '';
+
   @HostListener('document:click', ['$event'])
   clickOut(event: Event) {
     if (this.elementRef.nativeElement.contains(event.target)) {
@@ -78,6 +82,11 @@ export class CreateNoteComponent implements OnInit {
   }
 
   onAddLink(e: Event) {
+    const openSnackbar = () => {
+      this.commonService.openSnackbar("Please add a valid url");
+      this.addedLink = '';
+    }
+
     e.stopPropagation();
     if (!this.addedLink) {
       this.commonService.openSnackbar("Please add a valid url");
@@ -87,19 +96,46 @@ export class CreateNoteComponent implements OnInit {
     const urlRegex = /(((https?:\/\/)|(www\.))[^\s]+)/g;
 
     if (!this.addedLink.match(urlRegex)) {
-      this.commonService.openSnackbar("Please add a valid url");
-      this.addedLink = '';
+      openSnackbar();
       return;
     }
 
-    const newValue = this.createNoteForm.get('content')?.value + `\n${this.addedLink}\n`;
-    this.createNoteForm.patchValue({
-      "content": newValue
-    });
+    if (!this.addedLink.includes("@")) {
+      openSnackbar();
+      return;
+    }
 
+    let splitParams = this.addedLink.split("@");
+
+    if (splitParams.length == 1) {
+      openSnackbar();
+      return;
+    }
+
+    const latLongValues = splitParams[1].split(",");
+    if (latLongValues.length < 2) {
+      openSnackbar();
+      return;
+    }
+
+    this.latitude = latLongValues[0];
+    this.longitude = latLongValues[1];
+
+    this.includesMaps = true;
     this.showUrlInputField = false;
     this.addedLink = '';
-    this.includesUrl = true;
+
+    // https://www.google.com/maps/place/Bukit+Batok,+Singapore/@1.3561196,103.7359319,14z/data=!3m1!4b1!4m13!1m7!3m6!1s0x31da11238a8b9375:0x887869cf52abf5c4!2sSingapore!3b1!8m2!3d1.352083!4d103.819836!3m4!1s0x31da1049969ce5c9:0xae12582d45657edb!8m2!3d1.3590015!4d103.7636375
+    // https://www.google.com/maps/@12.7647389,75.2362377,15z
+
+    // const newValue = this.createNoteForm.get('content')?.value + `\n${this.addedLink}\n`;
+    // this.createNoteForm.patchValue({
+    //   "content": newValue
+    // });
+
+    // this.showUrlInputField = false;
+    // this.addedLink = '';
+    // this.includesUrl = true;
   }
 
   addNewItemToList() {
@@ -220,7 +256,9 @@ export class CreateNoteComponent implements OnInit {
       includesImages: this.uploadedImages.length > 0 ? true : false,
       includesMaps: false,
       images: this.uploadedImages,
-      isPinned: this.notePinned
+      isPinned: this.notePinned,
+      lat: this.latitude,
+      long: this.longitude
     }
 
     this.notesService.setAllNotes(note);

@@ -22,6 +22,7 @@ import { NoteDetailsComponent } from './note-details/note-details.component';
 import { NoteContentComponent } from './note/note-content/note-content.component';
 import { ImageGalleryComponent } from './image-gallery/image-gallery.component';
 import { ImageGridListComponent } from './image-grid-list/image-grid-list.component';
+import { MapsComponent } from './maps/maps.component';
 
 
 @NgModule({
@@ -33,7 +34,8 @@ import { ImageGridListComponent } from './image-grid-list/image-grid-list.compon
     NoteDetailsComponent,
     NoteContentComponent,
     ImageGalleryComponent,
-    ImageGridListComponent
+    ImageGridListComponent,
+    MapsComponent
   ],
   imports: [
     CommonModule,

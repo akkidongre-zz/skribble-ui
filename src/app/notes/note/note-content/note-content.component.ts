@@ -22,6 +22,7 @@ export class NoteContentComponent implements OnInit {
 
   googleMapPresent = false;
   googleMapLink: SafeUrl;
+  
   latitude: string;
   longitude: string;
 

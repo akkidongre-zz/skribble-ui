@@ -5,6 +5,8 @@ export interface Note {
     content: string;
     todo: {todoTitle: string, value: boolean}[];
     images: string[];
+    lat: string;
+    long: string;
     type: string;
     includesUrl: boolean;
     includesMaps: boolean;
