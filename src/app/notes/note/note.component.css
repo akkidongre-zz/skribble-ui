@@ -5,8 +5,7 @@ mat-card {
 }
 
 mat-card-title {
-    width: 224px;
-    white-space: nowrap;
+    max-height: 160px;
     overflow: hidden;
     text-overflow: ellipsis;
 }

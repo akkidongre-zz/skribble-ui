@@ -147,7 +147,8 @@ export class NotesComponent implements OnInit, OnDestroy {
       data: {
         data: noteData,
         editMode: editMode
-      }
+      },
+      disableClose: true
     });
 
     this.removeNoteFromFilteredData(noteData.id);
