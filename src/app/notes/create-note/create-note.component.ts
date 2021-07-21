@@ -279,6 +279,7 @@ export class CreateNoteComponent implements OnInit {
     this.includesMaps = false;
     this.latitude = '';
     this.longitude = '';
+    this.showUrlInputField = false;
   }
 
 }
