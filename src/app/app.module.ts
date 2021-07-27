@@ -42,7 +42,7 @@ import { SearchComponent } from './header/search/search.component';
           {
             id: GoogleLoginProvider.PROVIDER_ID,
             provider: new GoogleLoginProvider(
-              '890121489171-22v86n3inb546hbhcn9rmg93qg6sbj60.apps.googleusercontent.com'
+              'GOOGLE_SECRET_KEY'
             )
           }
         ]
